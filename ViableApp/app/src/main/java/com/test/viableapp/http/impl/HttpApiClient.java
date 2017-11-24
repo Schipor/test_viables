@@ -4,10 +4,6 @@ import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-/**
- * @author Sebastian Schipor <sebastian.schipor@osf-global.com> on 24/11/2017.
- */
-
 public class HttpApiClient {
 
     private String baseUrl = "http://randomuser.me/";

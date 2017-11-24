@@ -16,8 +16,8 @@
 
         <com.test.viableapp.widget.RoundedImageView
             android:id="@+id/user_photo"
-            android:layout_width="40dp"
-            android:layout_height="40dp" />
+            android:layout_width="50dp"
+            android:layout_height="50dp" />
 
     </LinearLayout>
 
@@ -33,7 +33,8 @@
             android:id="@+id/user_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/KColorWhite" />
+            android:textColor="@color/KColorWhite"
+            android:textDirection="locale" />
 
         <TextView
             android:id="@+id/age"

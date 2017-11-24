@@ -1,7 +1,5 @@
 package com.test.viableapp.http.impl;
 
-import android.os.Build;
-import android.support.compat.BuildConfig;
 import android.util.Log;
 
 import java.io.IOException;
@@ -15,9 +13,6 @@ import okhttp3.Response;
 import okhttp3.ResponseBody;
 import okio.Buffer;
 
-/**
- * @author Sebastian Schipor <sebastian.schipor@osf-global.com> on 24/11/2017.
- */
 
 public class LoggerInterceptor implements Interceptor {
 

@@ -1,14 +1,18 @@
 package com.test.viableapp.adapters;
 
 
+import android.graphics.Bitmap;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.test.viableapp.R;
 import com.test.viableapp.adapters.base.BaseAdapter;
 import com.test.viableapp.http.models.RandomUser;
@@ -17,7 +21,6 @@ import com.test.viableapp.widget.RoundedImageView;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -28,8 +31,6 @@ public class RandomUsersAdapter extends BaseAdapter<RandomUser> {
 
     public interface Callback {
         void onItemClicked(RandomUser user);
-
-        void setPhoto(RoundedImageView imageView, String photoUrl);
     }
 
     public RandomUsersAdapter(ArrayList<RandomUser> items, Callback callback) {
@@ -39,7 +40,7 @@ public class RandomUsersAdapter extends BaseAdapter<RandomUser> {
 
     @Override
     public ArrayList<RandomUser> setFilterLogic(List<RandomUser> originalList, String query) {
-        //can be used for local search
+        //can be used for local search -- implemented custom filer logic
         final ArrayList<RandomUser> filteredModelList = new ArrayList<>();
         for (RandomUser item : originalList) {
             filteredModelList.add(item);
@@ -63,7 +64,7 @@ public class RandomUsersAdapter extends BaseAdapter<RandomUser> {
     @Override
     public void onViewRecycled(RecyclerView.ViewHolder holder) {
         super.onViewRecycled(holder);
-        //when holder is recycled, clear clear the bitmap from imageview to prevent memory leaks
+        //when holder is recycled, clear the bitmap from imageview to prevent memory leaks
         ((ViewHolder) holder).userPhoto.setImageBitmap(null);
     }
 
@@ -104,15 +105,22 @@ public class RandomUsersAdapter extends BaseAdapter<RandomUser> {
             } else {
                 name.setText("N/A");
             }
-            if (user.getDob() != null) {
-                age.setText(String.format("Age: %1$s",DateUtils.getUserAge(user.getDob())));
-            } else {
-                age.setText("Age: N/A");
-            }
+            age.setText(String.format("Age: %1$s", DateUtils.getUserAge(user.getDob())));
             userFlag.setText(getCountryFlag(user.getNat()));
-            if (mCallback != null) {
-                if (user.getPicture() != null)
-                    mCallback.setPhoto(userPhoto, user.getPicture().getThumbnail());
+
+            if (user.getPicture() == null) {
+                userPhoto.setImageBitmap(null);
+            } else {
+                //Glide uses separate Threads for loading images
+                Glide.with(userPhoto.getContext()).asBitmap()
+                        .load(user.getPicture().getMedium())
+                        .apply(getDefaultOptions())
+                        .into(new SimpleTarget<Bitmap>() {
+                            @Override
+                            public void onResourceReady(Bitmap resource, Transition<? super Bitmap> transition) {
+                                userPhoto.setImageBitmap(resource);
+                            }
+                        });
             }
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -129,6 +137,14 @@ public class RandomUsersAdapter extends BaseAdapter<RandomUser> {
             int firstLetter = Character.codePointAt(countryCode, 0) - 0x41 + 0x1F1E6;
             int secondLetter = Character.codePointAt(countryCode, 1) - 0x41 + 0x1F1E6;
             return new String(Character.toChars(firstLetter)) + new String(Character.toChars(secondLetter));
+        }
+
+        private RequestOptions getDefaultOptions() {
+            RequestOptions option = new RequestOptions();
+            option.dontAnimate();
+            option.centerCrop();
+            option.diskCacheStrategy(DiskCacheStrategy.ALL);
+            return option;
         }
 
     }

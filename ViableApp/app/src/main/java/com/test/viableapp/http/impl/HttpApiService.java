@@ -6,10 +6,6 @@ import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
 
-/**
- * @author Sebastian Schipor <sebastian.schipor@osf-global.com> on 24/11/2017.
- */
-
 public interface HttpApiService {
 
     @GET("api")

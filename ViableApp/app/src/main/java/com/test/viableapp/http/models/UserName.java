@@ -6,10 +6,6 @@ import android.os.Parcelable;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-/**
- * @author Sebastian Schipor <sebastian.schipor@osf-global.com> on 24/11/2017.
- */
-
 public class UserName implements Parcelable {
 
     @SerializedName("title")

@@ -1,7 +1,5 @@
 package com.test.viableapp.fragments;
 
-
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
@@ -12,11 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.request.RequestOptions;
-import com.bumptech.glide.request.target.SimpleTarget;
-import com.bumptech.glide.request.transition.Transition;
 import com.test.viableapp.R;
 import com.test.viableapp.adapters.RandomUsersAdapter;
 import com.test.viableapp.fragments.base.BaseFragment;
@@ -24,7 +17,6 @@ import com.test.viableapp.http.ApiManager;
 import com.test.viableapp.http.impl.HttpCallback;
 import com.test.viableapp.http.models.HttpError;
 import com.test.viableapp.http.models.RandomUser;
-import com.test.viableapp.widget.RoundedImageView;
 
 import java.util.ArrayList;
 
@@ -105,15 +97,18 @@ public class UsersListFragment extends BaseFragment implements RandomUsersAdapte
                 new HttpCallback<RandomUser.Response>() {
                     @Override
                     public void onSuccess(RandomUser.Response response) {
+                        //if the list size is smaller that perPage count, there are no more results
+                        existsMoreRecords = response != null && response.getResults() != null && response.getResults().size() >= perPage;
+
                         swipeRefresh.setRefreshing(false);
                         dismissLoading();
                         if (response != null && response.getResults() != null) {
                             if (page == 0) {
                                 users = response;
-                                adapter.refresh(new ArrayList<RandomUser>(response.getResults()));
+                                adapter.refresh(new ArrayList<>(response.getResults()));
                             } else {
                                 users.append(response.getResults());
-                                adapter.addItems(new ArrayList<RandomUser>(users.getResults()));
+                                adapter.addItems(new ArrayList<>(users.getResults()));
                             }
                         }
                     }
@@ -128,14 +123,6 @@ public class UsersListFragment extends BaseFragment implements RandomUsersAdapte
         );
     }
 
-    private RequestOptions getDefaultOptions() {
-
-        RequestOptions option = new RequestOptions();
-        option.dontAnimate();
-        option.centerCrop();
-        option.diskCacheStrategy(DiskCacheStrategy.ALL);
-        return option;
-    }
 
     private void handlePagination() {
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -176,22 +163,5 @@ public class UsersListFragment extends BaseFragment implements RandomUsersAdapte
     @Override
     public void onItemClicked(RandomUser user) {
         pushFragment(UserDetailsFragment.newInstance(user));
-    }
-
-    @Override
-    public void setPhoto(final RoundedImageView imageView, String photoUrl) {
-        if (photoUrl == null) {
-            imageView.setImageBitmap(null);
-        } else {
-            Glide.with(imageView.getContext()).asBitmap()
-                    .load(photoUrl)
-                    .apply(getDefaultOptions())
-                    .into(new SimpleTarget<Bitmap>() {
-                        @Override
-                        public void onResourceReady(Bitmap resource, Transition<? super Bitmap> transition) {
-                            imageView.setImageBitmap(resource);
-                        }
-                    });
-        }
     }
 }

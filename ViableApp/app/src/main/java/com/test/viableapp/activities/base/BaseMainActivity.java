@@ -25,7 +25,10 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-
+/**
+ * @brief This base is used for MainActivity, for an easy access of main functions: show loader, alerts,
+ * change fragments, handle back navigation
+ */
 public abstract class BaseMainActivity extends AppCompatActivity implements BaseFragment.BaseFragmentCallback {
 
     @BindView(R.id.action_back)
@@ -53,8 +56,6 @@ public abstract class BaseMainActivity extends AppCompatActivity implements Base
         ButterKnife.bind(this);
 
         mFragmentManager = getSupportFragmentManager();
-
-
     }
 
     @OnClick(R.id.action_back)

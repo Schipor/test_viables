@@ -11,14 +11,15 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.test.viableapp.R;
+import com.test.viableapp.activities.FullScreenPhotoActivity;
 import com.test.viableapp.databinding.FragmentUserDetailsBinding;
 import com.test.viableapp.fragments.base.BaseFragment;
-import com.test.viableapp.fragments.callback.LayoutCallback;
+import com.test.viableapp.fragments.callback.DetailsLayoutCallback;
 import com.test.viableapp.http.models.RandomUser;
 import com.test.viableapp.viewmodel.DetailsViewModel;
 
 
-public class UserDetailsFragment extends BaseFragment implements LayoutCallback {
+public class UserDetailsFragment extends BaseFragment implements DetailsLayoutCallback {
 
     private RandomUser user;
     private FragmentUserDetailsBinding binding;
@@ -69,16 +70,32 @@ public class UserDetailsFragment extends BaseFragment implements LayoutCallback 
     }
 
     @Override
+    public void onPhoneClicked(String phone) {
+        if (phone == null)
+            return;
+        //open dialer
+        Intent intent = new Intent(Intent.ACTION_DIAL);
+        intent.setData(Uri.parse(String.format("tel:%s", phone)));
+        startActivity(intent);
+    }
+
+    @Override
     public void onEmailClicked(String email) {
         if (email == null)
             return;
-        Intent intent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
-                "mailto",email, null));
+        Intent intent = new Intent(Intent.ACTION_SEND);
         intent.setType("text/plain");
         intent.putExtra(Intent.EXTRA_SUBJECT, "Viable Test APP");
-        intent.putExtra(Intent.EXTRA_EMAIL, email);
+        intent.putExtra(Intent.EXTRA_EMAIL, new String[]{email});
         Intent mailer = Intent.createChooser(intent, null);
         startActivity(mailer);
+    }
+
+    @Override
+    public void onPhotoClicked(String imageUrl) {
+        Intent intent = new Intent(getActivity(), FullScreenPhotoActivity.class);
+        intent.putExtra(FullScreenPhotoActivity.EXTRA_URL, imageUrl);
+        startActivity(intent);
     }
 
 }

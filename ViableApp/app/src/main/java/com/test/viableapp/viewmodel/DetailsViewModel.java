@@ -24,7 +24,7 @@ public class DetailsViewModel extends BaseObservable {
     @Bindable
     public String getName() {
         if (user.getName() != null) {
-            return String.format("%1$s %2$s %3$s", user.getName().getTitle(), user.getName().getFirst(), user.getName().getLast());
+            return String.format("%1$s. %2$s %3$s", user.getName().getTitle(), user.getName().getFirst(), user.getName().getLast());
         } else {
             return "";
         }
@@ -38,6 +38,11 @@ public class DetailsViewModel extends BaseObservable {
     @Bindable
     public String getEmail() {
         return user.getEmail();
+    }
+
+    @Bindable
+    public String getPhone() {
+        return user.getPhone();
     }
 
     @Bindable

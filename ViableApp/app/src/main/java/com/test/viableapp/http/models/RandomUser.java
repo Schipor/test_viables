@@ -9,9 +9,6 @@ import com.google.gson.annotations.SerializedName;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * @author Sebastian Schipor <sebastian.schipor@osf-global.com> on 24/11/2017.
- */
 
 public class RandomUser implements Parcelable {
 
