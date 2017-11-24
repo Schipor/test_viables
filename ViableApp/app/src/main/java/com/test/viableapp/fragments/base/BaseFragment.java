@@ -10,6 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 
+import com.test.viableapp.activities.base.BaseMainActivity;
+
 
 public abstract class BaseFragment extends Fragment {
 
@@ -18,6 +20,16 @@ public abstract class BaseFragment extends Fragment {
     public interface BaseFragmentCallback {
 
         void pushFragment(Fragment fragment);
+
+        void showBackButton(boolean show);
+
+        void setCustomTitle(String title);
+
+        void showLoading();
+
+        void dismissLoading();
+
+        void showAlert(String title, String message, String okAction, String cancelAction, BaseMainActivity.CustomDialogCallback customDialogCallback);
 
     }
 
@@ -56,5 +68,29 @@ public abstract class BaseFragment extends Fragment {
         if (isAdded()) {
             customize(savedInstanceState);
         }
+    }
+
+    protected void setCustomTitle(String title) {
+        mCallback.setCustomTitle(title);
+    }
+
+    protected void showBackButton(boolean show) {
+        mCallback.showBackButton(show);
+    }
+
+    protected void pushFragment(Fragment fragment) {
+        mCallback.pushFragment(fragment);
+    }
+
+    protected void showLoading() {
+        mCallback.showLoading();
+    }
+
+    protected void dismissLoading() {
+        mCallback.dismissLoading();
+    }
+
+    protected void showAlert(String title, String message, String okAction, String cancelAction, BaseMainActivity.CustomDialogCallback customDialogCallback) {
+        mCallback.showAlert(title, message, okAction, cancelAction, customDialogCallback);
     }
 }

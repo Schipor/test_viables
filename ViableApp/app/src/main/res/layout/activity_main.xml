@@ -23,7 +23,8 @@
             android:layout_marginStart="@dimen/Margin10dp"
             android:rotation="180"
             android:src="@drawable/right_arrow"
-            android:tint="@color/KColorWhite" />
+            android:tint="@color/KColorWhite"
+            android:visibility="invisible" />
 
         <TextView
             android:id="@+id/main_title"
