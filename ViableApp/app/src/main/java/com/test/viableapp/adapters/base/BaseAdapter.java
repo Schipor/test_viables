@@ -79,12 +79,10 @@ public abstract class BaseAdapter<Item> extends RecyclerView.Adapter<RecyclerVie
     }
     //endregion
 
-    protected void refreshList(List<Item> list, Runnable callback) {
+    protected void refreshList(List<Item> list) {
         mItems.clear();
         mItems.addAll(list);
         notifyDataSetChanged();
-
-        if (callback != null) callback.run();
     }
 
     public ArrayList<Item> getItems() {

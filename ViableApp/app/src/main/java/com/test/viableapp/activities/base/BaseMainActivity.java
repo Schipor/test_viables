@@ -64,6 +64,15 @@ public abstract class BaseMainActivity extends AppCompatActivity implements Base
     }
 
     @Override
+    public void onBackPressed() {
+        if (mFragmentManager.getBackStackEntryCount() == 1) {
+            finish();
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    @Override
     public void pushFragment(Fragment fragment) {
         FragmentTransaction transaction = mFragmentManager.beginTransaction();
         Fragment inflatedFragment = mFragmentManager.findFragmentById(fragmentContainer.getId());
@@ -102,7 +111,7 @@ public abstract class BaseMainActivity extends AppCompatActivity implements Base
                 return;
             }
 
-            mOverlayDialog = new Dialog(this);
+            mOverlayDialog = new Dialog(BaseMainActivity.this);
             mOverlayDialog.setContentView(R.layout.loading_dialog_layout);
             mOverlayDialog.setCancelable(false);
             mOverlayDialog.setCanceledOnTouchOutside(false);
@@ -110,12 +119,12 @@ public abstract class BaseMainActivity extends AppCompatActivity implements Base
                 mOverlayDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
             mOverlayDialog.getWindow().setFlags(WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM,
                     WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
-            View divider = mOverlayDialog.findViewById(this.getResources().getIdentifier("android:id/titleDivider", null, null));
+            View divider = mOverlayDialog.findViewById(BaseMainActivity.this.getResources().getIdentifier("android:id/titleDivider", null, null));
             if (divider != null)
-                divider.setBackgroundColor(ContextCompat.getColor(this, R.color.KColorTransparent));
+                divider.setBackgroundColor(ContextCompat.getColor(BaseMainActivity.this, R.color.KColorTransparent));
             mOverlayDialog.show();
 
-        } catch (Throwable t) {
+        } catch (Exception t) {
             Log.e("Exception", t.getMessage(), t);
         }
     }
@@ -125,7 +134,7 @@ public abstract class BaseMainActivity extends AppCompatActivity implements Base
         if (mOverlayDialog != null) {
             try {
                 mOverlayDialog.dismiss();
-            } catch (Throwable t) {
+            } catch (Exception t) {
                 Log.e("Exception", t.getMessage(), t);
             }
         }

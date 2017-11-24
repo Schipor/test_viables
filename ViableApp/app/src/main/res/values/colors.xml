@@ -8,5 +8,6 @@
     <color name="colorAccentHalfAlpha">#7ff63854</color>
     <color name="KColorBlack">#000000</color>
     <color name="KColorWhite">#FFFFFF</color>
+    <color name="KColorDivider">#4dd7d7d7</color>
     <color name="KColorTransparent">@android:color/transparent</color>
 </resources>

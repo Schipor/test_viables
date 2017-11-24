@@ -1,5 +1,6 @@
 package com.test.viableapp.http.impl;
 
+import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -9,7 +10,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class HttpApiClient {
 
-    private String baseUrl = "http://randomuser.me/api";
+    private String baseUrl = "http://randomuser.me/";
     private static HttpApiClient INSTANCE;
     private HttpApiService service;
 
@@ -23,11 +24,13 @@ public class HttpApiClient {
     public HttpApiClient() {
         service = new Retrofit.Builder()
                 .baseUrl(baseUrl)
+                .client(new OkHttpClient.Builder()
+                        .addInterceptor(new LoggerInterceptor()).build())
                 .addConverterFactory(GsonConverterFactory.create())
                 .build().create(HttpApiService.class);
     }
 
-    public HttpApiService getClient() {
+    protected HttpApiService getClient() {
         return service;
     }
 }

@@ -15,6 +15,8 @@ import com.test.viableapp.activities.base.BaseMainActivity;
 
 public abstract class BaseFragment extends Fragment {
 
+    public static final String EXTRA_OBJECT = "EXTRA_OBJECT";
+
     private BaseFragmentCallback mCallback;
 
     public interface BaseFragmentCallback {
